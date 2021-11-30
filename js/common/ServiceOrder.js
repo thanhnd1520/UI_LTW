@@ -6,26 +6,22 @@ $(document).ready(function () {
         width: 700,
         modal: true
     }),
-    dialog1 = $(".pop-up").dialog({
-        autoOpen: false,
-        modal: true,
-        with: 700,
-        height:150
-    }) ;
+        dialog1 = $(".pop-up").dialog({
+            autoOpen: false,
+            modal: true,
+            with: 700,
+            height: 150
+        });
     $.ajax({
-        url: 'http://localhost:8080/service/services',
+        url: 'http://localhost:8080/service-order',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
     }).done(function (response) {
         loadData(response);
         $('#btnAdderCustomer').click(btnAddOnClick);
-        /*$('tr').dblclick(trUpdateOnDbClick);*/
         $('#cancelBtn').click(btnCancelOnClick);
-        /*$('#updateBtn').click(btnUpdateOnClick);*/
         $('#saveBtn').click(btnSaveOnClick);
-       /* $('#deleteBtn').click(btnDeleteOnClick)*/
-        
     }).fail(function (response) {
 
     })
@@ -71,7 +67,7 @@ function trUpdateOnDbClick(ctl) {
         $('#serviceName').val(response["name"]);
         $('#typeService').val(response["type"]);
         $('#costService').val(response["cost"]);
-        
+
     }).fail(function (response) {
 
     })
@@ -81,40 +77,20 @@ function search() {
     var key = $('#searchService').val();
     $('#serviceTableBody tr ').remove();
     if (!key) {
-        $.ajax({
-            url: 'http://localhost:8080/service/services',
-            method: 'GET',
-            data: 'NULL',
-            contentType: 'application/json'
-        }).done(function (response) {
-            loadData(response);
-        }).fail(function (response) {
-
-        })
-    } else if(key === ""){
-        $.ajax({
-            url: 'http://localhost:8080/service/services',
-            method: 'GET',
-            data: 'NULL',
-            contentType: 'application/json'
-        }).done(function (response) {
-            loadData(response);
-        }).fail(function (response) {
-
-        })
-    }else {
-        $.ajax({
-            url: 'http://localhost:8080/service/filter/' + key,
-            method: 'GET',
-            data: 'NULL',
-            contentType: 'application/json'
-        }).done(function (response) {
-            loadData(response);
-        }).fail(function (response) {
-
-        })
+        key = "";
+    } else {
+        key = "/filter/" + key;
     }
-    
+    $.ajax({
+        url: 'http://localhost:8080/service' + key,
+        method: 'GET',
+        data: 'NULL',
+        contentType: 'application/json'
+    }).done(function (response) {
+        loadData(response);
+    }).fail(function (response) {
+
+    })
 }
 
 function btnSaveOnClick() {
@@ -156,36 +132,7 @@ function getDataDialog() {
     var name = $('#serviceName').val();
     var type = $('#typeService').val();
     var cost = $('#costService').val();
-    /*var phoneNumber = $('#phoneNumberIN').val();
-    var email = $('#emailIN').val();
-    var position = $('#positionIN').val();
-    var department = $('#departmentIN').val();
-    var salary = $('#salaryIN').val();
-    var status = $('#statusJobIN').val();
-    var identityCardCode = $('#identityCardCodeIN').val();
-    var identityCardDate = $('#identityCardDateIN').val();
-    var identityCardPalce = $('#identityCardPalceIN').val();
-    var taxCode = $('#textCodeIN').val();*/
-    /*if (employeeCode == "") {
-        dialog1.after("Mã nhân viên không được để trống \n");
-        check = false;
-    }
-    if (fullName == "") {
-        dialog1.after("Họ và tên không được để trống \n"); check = false;
-    }
-    if (identityCardCode == "") {
-        dialog1.after("CMTDN/Căn cước không được để trống \n"); check = false;
-    }
-    if (email == "") {
-        dialog1.after("Email không được để trống \n"); check = false;
-    }
-    if (phoneNumber == "") {
-        dialog1.after("Số điện thoại không được để trống \n"); check = false;
-    }
-    if (check == false) {
-        dialog1.dialog("open");
-        return;
-    }*/
+    
     var Data = {
         "serviceCode": code,
         "name": name,
@@ -205,7 +152,26 @@ function getDate(date) {
         + d.getFullYear();
     return output;
 }
-
+function getGender(gender) {
+    if (gender == 1)
+        return "Nam";
+    if (gender == 2)
+        return "Khác";
+    if (gender == 0)
+        return "Nữ";
+    return "";
+}
+function getStatusJob(status) {
+    if (status == 1)
+        return "Đang làm việc";
+    if (status == 2)
+        return "Đang thử việc";
+    if (status == 3)
+        return "Đã nghỉ hưu";
+    if (status == 0)
+        return "Đã nghỉ việc";
+    return "";
+}
 function btnAddOnClick() {
     dialog.dialog('open');
     $("#updateBtn").hide();
@@ -213,6 +179,6 @@ function btnAddOnClick() {
 }
 
 function btnCancelOnClick() {
-    
+
     dialog.dialog('close');
 }
