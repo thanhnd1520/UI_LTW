@@ -13,7 +13,7 @@ $(document).ready(function () {
             height: 150
         });
     $.ajax({
-        url: 'http://localhost:8080/service-order',
+        url: 'http://localhost:8080/service-order/list',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
@@ -34,19 +34,21 @@ function loadData(response) {
     console.log(response);
     for (var i = 0; i < response.length; i++) {
         var item = response[i];
-        var serviceId = item['id'];
-        var serviceCode = item['serviceCode'];
-        var name = item['name'];
-        var type = item['type'];
-        var cost = item['cost'];
+        var serviceOrderId = item['id'];
+        var startDAte = getDate(new Date(item['startDate']));
+        var endDate = getDate(new Date(item['endDate']));
+        var serviceName = item['service'].name;
+        var companyName = item['company'].name;
+        var staffBuildingName = item['staffBuilding'].name;
 
-        console.log(serviceCode);
-        var trHTML = `<tr id="${serviceId}" value=${serviceId} ondblclick='trUpdateOnDbClick(${serviceId})' >
-                        <td>${serviceCode}</td>
-                        <td>${name}</td>
-                        <td>${type}</td>
-                        <td>${cost}</td>
-                        <td><Button id="deleteBtn" value=${serviceId} onclick='productDelete(this);'>Xóa</Button></td>
+        var trHTML = `<tr id="${serviceOrderId}" value=${serviceOrderId} ondblclick='trUpdateOnDbClick(${serviceOrderId})' >
+                        <td>${serviceOrderId}</td>
+                        <td>${serviceName}</td>
+                        <td>${companyName}</td>
+                        <td>${staffBuildingName}</td>
+                        <td>${startDAte}</td>
+                        <td>${endDate}</td>
+                        <td><Button id="deleteBtn" value=${serviceOrderId} onclick='productDelete(this);'>Xóa</Button></td>
                      </tr>`
         $('#tbListData tbody').append(trHTML);
     }

@@ -13,7 +13,7 @@ $(document).ready(function () {
         height:150
     }) ;
     $.ajax({
-        url: 'http://localhost:8080/service/services',
+        url: 'http://localhost:8080/service/list',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
@@ -22,7 +22,7 @@ $(document).ready(function () {
         $('#btnAdderCustomer').click(btnAddOnClick);
         /*$('tr').dblclick(trUpdateOnDbClick);*/
         $('#cancelBtn').click(btnCancelOnClick);
-        /*$('#updateBtn').click(btnUpdateOnClick);*/
+        $('#updateBtn').click(btnUpdateOnClick);
         $('#saveBtn').click(btnSaveOnClick);
        /* $('#deleteBtn').click(btnDeleteOnClick)*/
         
@@ -35,6 +35,7 @@ var id;
 var objectData;
 
 function loadData(response) {
+    $('#serviceTableBody tr ').remove();
     console.log(response);
     for (var i = 0; i < response.length; i++) {
         var item = response[i];
@@ -60,6 +61,7 @@ function trUpdateOnDbClick(ctl) {
     dialog.dialog('open');
     $("#saveBtn").hide();
     $("#updateBtn").show();
+    document.getElementById('updateBtn').value = ctl;
     /*var id = $(ctl).val();*/
     $.ajax({
         url: 'http://localhost:8080/service/' + ctl,
@@ -79,10 +81,10 @@ function trUpdateOnDbClick(ctl) {
 
 function search() {
     var key = $('#searchService').val();
-    $('#serviceTableBody tr ').remove();
+    
     if (!key) {
         $.ajax({
-            url: 'http://localhost:8080/service/services',
+            url: 'http://localhost:8080/service/list',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -93,7 +95,7 @@ function search() {
         })
     } else if(key === ""){
         $.ajax({
-            url: 'http://localhost:8080/service/services',
+            url: 'http://localhost:8080/service/list',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -126,13 +128,39 @@ function btnSaveOnClick() {
         url: 'http://localhost:8080/service/create',
     }).done(function (response) {
         console.log(response);
+        $.ajax({
+            url: 'http://localhost:8080/service/list',
+            method: 'GET',
+            data: 'NULL',
+            contentType: 'application/json'
+        }).done(function (response) {
+            loadData(response);
+
+        }).fail(function (response) {
+
+        })
     }).fail(function (response) {
         console.log(response);
-    })
+        
+    });
+    btnCancelOnClick();
 }
 
 function btnUpdateOnClick() {
     objectData = getDataDialog();
+    var id = $('#updateBtn').val();
+    var tmp = 'http://localhost:8080/service/update/' + id;
+    $.ajax({
+        url: tmp,
+        method: 'POST',
+        data: JSON.stringify(objectData),
+        contentType: 'application/json'
+    }).done(function (response) {
+
+    }).fail(function (response) {
+        alert("cập nhật không thành công");
+    });
+    dialog.dialog('close');
 }
 
 function productDelete(ctl) {
@@ -156,41 +184,13 @@ function getDataDialog() {
     var name = $('#serviceName').val();
     var type = $('#typeService').val();
     var cost = $('#costService').val();
-    /*var phoneNumber = $('#phoneNumberIN').val();
-    var email = $('#emailIN').val();
-    var position = $('#positionIN').val();
-    var department = $('#departmentIN').val();
-    var salary = $('#salaryIN').val();
-    var status = $('#statusJobIN').val();
-    var identityCardCode = $('#identityCardCodeIN').val();
-    var identityCardDate = $('#identityCardDateIN').val();
-    var identityCardPalce = $('#identityCardPalceIN').val();
-    var taxCode = $('#textCodeIN').val();*/
-    /*if (employeeCode == "") {
-        dialog1.after("Mã nhân viên không được để trống \n");
-        check = false;
-    }
-    if (fullName == "") {
-        dialog1.after("Họ và tên không được để trống \n"); check = false;
-    }
-    if (identityCardCode == "") {
-        dialog1.after("CMTDN/Căn cước không được để trống \n"); check = false;
-    }
-    if (email == "") {
-        dialog1.after("Email không được để trống \n"); check = false;
-    }
-    if (phoneNumber == "") {
-        dialog1.after("Số điện thoại không được để trống \n"); check = false;
-    }
-    if (check == false) {
-        dialog1.dialog("open");
-        return;
-    }*/
+    
+    
     var Data = {
         "serviceCode": code,
         "name": name,
         "type": type,
-        "cost": cost
+        "cost": cost,
     };
     console.log(Data);
     return Data;
