@@ -24,13 +24,26 @@ $(document).ready(function () {
         $('#saveBtn').click(btnSaveOnClick);
     }).fail(function (response) {
 
-    })
+    });
 })
 
 var id;
 var objectData;
 
+function getAll() {
+    $.ajax({
+        url: 'http://localhost:8080/service-order/list',
+        method: 'GET',
+        data: 'NULL',
+        contentType: 'application/json'
+    }).done(function (response) {
+        loadData(response);
+    }).fail(function (response) {
+    });
+}
+
 function loadData(response) {
+    $('#serviceOrderTableBody tr ').remove();
     console.log(response);
     for (var i = 0; i < response.length; i++) {
         var item = response[i];
@@ -58,25 +71,34 @@ function trUpdateOnDbClick(ctl) {
     dialog.dialog('open');
     $("#saveBtn").hide();
     $("#updateBtn").show();
-    /*var id = $(ctl).val();*/
+    document.getElementById('updateBtn').value = ctl;
+    loadElement();
     $.ajax({
-        url: 'http://localhost:8080/service/' + ctl,
+        url: 'http://localhost:8080/service-order/' + ctl,
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
     }).done(function (response) {
-        $('#serviceCode').val(response["serviceCode"]);
-        $('#serviceName').val(response["name"]);
-        $('#typeService').val(response["type"]);
-        $('#costService').val(response["cost"]);
+        var startDate = getDateImport(new Date(response['startDate']));
+        var endDate = getDateImport(new Date(response['endDate']));
+        var serviceId = response['service'].id;
+        var companyId = response['company'].id;
+        var staffBuildingId = response['staffBuilding'].id;
 
+        $("#companySelect select").val(companyId).change();
+        $("#serviceSelect select").val(serviceId).change();
+        $("#staffBuildingSelect select").val(staffBuildingId).change();
+        $("#startDateOrder").val(startDate);
+        $("#endDateOrder").val(endDate);
     }).fail(function (response) {
 
     })
 }
 
 function search() {
-    var key = $('#searchService').val();
+    var companyId = $('#searchServiceOrder').val();
+    var startDate = $('#searchServiceOrder').val();
+    var endDate = $('#searchServiceOrder').val();
     $('#serviceTableBody tr ').remove();
     if (!key) {
         key = "";
@@ -101,16 +123,29 @@ function btnSaveOnClick() {
         data: JSON.stringify(data),
         contentType: 'application/json',
         type: 'POST',
-        url: 'http://localhost:8080/service/create',
+        url: 'http://localhost:8080/service-order/insert',
     }).done(function (response) {
-        console.log(response);
+        getAll();
+        btnCancelOnClick();
     }).fail(function (response) {
         console.log(response);
     })
 }
 
-function btnUpdateOnClick() {
+function btnUpdateOnClick() { // chưa có api
     objectData = getDataDialog();
+    var id = $('#updateBtn').val();
+    var tmp = 'http://localhost:8080/service-order/update/' + id;
+    $.ajax({
+        url: tmp,
+        method: 'POST',
+        data: JSON.stringify(objectData),
+        contentType: 'application/json'
+    }).done(function (response) {
+
+    }).fail(function (response) {
+        alert("cập nhật không thành công");
+    });
 }
 
 function productDelete(ctl) {
@@ -120,7 +155,7 @@ function productDelete(ctl) {
     $.ajax({
         contentType: 'application/json',
         type: 'DELETE',
-        url: 'http://localhost:8080/service/delete/' + id,
+        url: 'http://localhost:8080/service-order/delete/' + id,
     }).done(function (response) {
         console.log(response);
     }).fail(function (response) {
@@ -129,17 +164,19 @@ function productDelete(ctl) {
 }
 
 function getDataDialog() {
-    var check = true;
-    var code = $('#serviceCode').val();
-    var name = $('#serviceName').val();
-    var type = $('#typeService').val();
-    var cost = $('#costService').val();
+    var companyId = $('#companySelect').val();
+    var serviceId = $('#serviceSelect').val();
+    var staffBuildingId = $('#staffBuildingSelect').val();
+    var startDate = new Date($('#startDateOrder').val()).getTime();
+    var endDate = new Date($('#endDateOrder').val()).getTime();
+   
     
     var Data = {
-        "serviceCode": code,
-        "name": name,
-        "type": type,
-        "cost": cost
+        "staffBuildingId": staffBuildingId,
+        "companyId": companyId,
+        "serviceId": serviceId,
+        "startDate": startDate,
+        "endDate": endDate
     };
     console.log(Data);
     return Data;
@@ -154,6 +191,15 @@ function getDate(date) {
         + d.getFullYear();
     return output;
 }
+
+function getDateImport(date) {
+    d = new Date(date);
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    var output = d.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day  
+    return output;
+}
+
 function getGender(gender) {
     if (gender == 1)
         return "Nam";
@@ -178,9 +224,72 @@ function btnAddOnClick() {
     dialog.dialog('open');
     $("#updateBtn").hide();
     $("#saveBtn").show();
+    loadElement();
 }
 
 function btnCancelOnClick() {
 
     dialog.dialog('close');
+}
+function loadElement() {
+    $('#serviceSelect')
+        .find('option')
+        .remove();
+    $.ajax({
+        contentType: 'application/json',
+        type: 'GET',
+        url: 'http://localhost:8080/service/list',
+    }).done(function (response) {
+        for (var i = 0; i < response.length; i++) {
+            var item = response[i];
+            var serviceId = item['id'];
+            var serviceCode = item['serviceCode'];
+            var name = item['name'];
+            var optionText = serviceCode + "-" + name;
+            $("#serviceSelect").append(new Option(optionText, serviceId));
+        }
+    }).fail(function (response) {
+        console.log(response);
+    })
+
+    // render selection của company
+    $('#companySelect')
+        .find('option')
+        .remove();
+    $.ajax({
+        contentType: 'application/json',
+        type: 'GET',
+        url: 'http://localhost:8080/company',
+    }).done(function (response) {
+        for (var i = 0; i < response.length; i++) {
+            var item = response[i];
+            var companyId = item['id'];
+            var name = item['name'];
+            var optionText = name;
+            $("#companySelect").append(new Option(optionText, companyId));
+        }
+    }).fail(function (response) {
+        console.log(response);
+    })
+
+
+    $('#staffBuildingSelect')
+        .find('option')
+        .remove();
+    $.ajax({
+        contentType: 'application/json',
+        type: 'GET',
+        url: 'http://localhost:8080/staffsbuilding',
+    }).done(function (response) {
+        for (var i = 0; i < response.length; i++) {
+            var item = response[i];
+            var staffId = item['id'];
+            var name = item['name'];
+            var codeStaff = item['codeStaff'];
+            var optionText = codeStaff + "-" + name;
+            $("#staffBuildingSelect").append(new Option(optionText, staffId));
+        }
+    }).fail(function (response) {
+        console.log(response);
+    })
 }

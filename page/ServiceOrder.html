@@ -68,8 +68,20 @@
                         <div class="icon"></div>
                         <div class="adder_string">Thêm dịch vụ</div>
                     </button>
-                    <input type="text" class="searching-item" id="searchService" placeholder="Tìm kiếm theo Mã, Tên hoặc Số điện thoại"
-                           style="height:30px; width:300px" />
+                    <div style="display:flex">
+                        <div style="height:30px; vertical-align: middle">Mã công ty</div>
+                        <div>
+                            <input type="text" id="searchServiceOrder" placeholder="Mã công ty"
+                                   style="height:30px; width:100px; margin-right: 15px" />
+                        </div>
+                        <div style="height:30px; vertical-align: middle ">ngày bắt đầu</div>
+                        <div><input type="date" id="searchStartDate" style="height:30px; width:100px; margin-right: 15px" /></div>
+                        <div style="height:30px; vertical-align: middle">ngày kết thúc</div>
+                        <div><input type="date" id="searchEndDate" style="height:30px; width:100px; margin-right: 15px" /></div>
+
+
+
+                    </div>
                     <button class="refresh-item" onclick='search()'></button>
                 </div>
                 <div class="middle_content">
@@ -77,16 +89,15 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Mã dịch vụ</th>
-                                <th>Mã công ty</th>
-                                <th>Mã nhân viên</th>
+                                <th>Tên dịch vụ</th>
+                                <th>Tên công ty</th>
+                                <th>Nhân viên phục vụ</th>
                                 <th>Ngày bắt đầu</th>
-                                <th>Ngày kết thúc</th>
                                 <th>Ngày kết thúc</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="serviceTableBody">
+                        <tbody id="serviceOrderTableBody">
                         </tbody>
                     </table>
                 </div>
@@ -99,30 +110,30 @@
                     <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
                     <div class="element">
                         <div class="block_field">
-                            <label>Chọn dịch công ty(<a style="color:#ff0000">*</a>)</label>
-                                <select tabindex="9" id="companySelect" class="b-block_field w2-block_field">
+                            <label>Chọn công ty(<a style="color:#ff0000">*</a>)</label>
+                                <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
                                 </select>
                         </div>
                         <div class="block_field1">
                             <label>Chọn dịch vụ(<a style="color:#ff0000">*</a>)</label>
-                                <select tabindex="9" id="serviceSelect" class="b-block_field w2-block_field">
+                                <select tabindex="2" id="serviceSelect" class="b-block_field w2-block_field">
                                 </select>
                         </div>
                     </div>
                     <div class="element">
                         <div class="block_field">
                             <label>Ngày bắt đầu</label>
-                            <input tabindex="2" id="startDateOrder" class="b-block_field w1-block_field" type="date" />
+                            <input tabindex="3" id="startDateOrder" class="b-block_field w1-block_field" type="date" />
                         </div>
                         <div class="block_field">
                             <label>Ngày kết thúc</label>
-                            <input tabindex="3" id="endDateOrder" class="b-block_field w1-block_field" type="date" />
+                            <input tabindex="4" id="endDateOrder" class="b-block_field w1-block_field" type="date" />
                         </div>
                     </div>
                     <div class="element">
                         <div class="block_field">
                             <label>Chọn nhân viên(<a style="color:#ff0000">*</a>)</label>
-                            <select tabindex="9" id="staffBuildingSelect" class="b-block_field w2-block_field">
+                            <select tabindex="5" id="staffBuildingSelect" class="b-block_field w2-block_field">
                             </select>
                         </div>
                         <div class="block_field1">
