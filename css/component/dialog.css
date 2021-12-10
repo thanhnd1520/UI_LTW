@@ -88,3 +88,36 @@
 .dialog_detail .bottom_dialog .button:hover {
    cursor:pointer;
 }
+
+.dialog_bill_detail {
+    width: 900px;
+    display: block;
+    background-color: #ffffff;
+}
+
+    .dialog_bill_detail .content_dialog {
+        display: flex;
+    }
+
+    .dialog_bill_detail .bottom_dialog_bill {
+        margin-top: 10px;
+        position: relative;
+        align-items: center;
+        justify-content: flex-end;
+        display: flex;
+        width: 100%;
+        height: 50px;
+        background-color: #BBBBBB;
+    }
+
+    .dialog_bill_detail .content_dialog .left_content {
+        width: 150px;
+        margin-left: 15px
+    }
+
+    .dialog_bill_detail .content_dialog .right_content {
+        width: 510px;
+        margin-left: 10px;
+        margin-right: 15px;
+        display: block;
+    }

@@ -6,22 +6,28 @@ $(document).ready(function () {
         width: 700,
         modal: true
     }),
-        dialog1 = $(".pop-up").dialog({
-            autoOpen: false,
-            modal: true,
-            with: 700,
-            height: 150
-        });
+    dialog_detail = $(".dialog_bill_detail").dialog({
+        autoOpen: false,
+        width: 700,
+        modal: true
+    }),
+    dialog1 = $(".pop-up").dialog({
+        autoOpen: false,
+        modal: true,
+        with: 700,
+        height: 150
+    });
     $.ajax({
-        url: 'http://localhost:8080/service-order/list',
+        url: 'http://localhost:8080/order-bill/list',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
     }).done(function (response) {
         loadData(response);
+        loadElement()
         $('#btnAdderCustomer').click(btnAddOnClick);
         $('#cancelBtn').click(btnCancelOnClick);
-        $('#saveBtn').click(btnSaveOnClick);
+        $('#createBtn').click(btnCreateBillOnClick);
     }).fail(function (response) {
 
     });
@@ -32,7 +38,7 @@ var objectData;
 
 function getAll() {
     $.ajax({
-        url: 'http://localhost:8080/service-order/list',
+        url: 'http://localhost:8080/order-bill/list',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
@@ -43,25 +49,30 @@ function getAll() {
 }
 
 function loadData(response) {
-    $('#serviceOrderTableBody tr ').remove();
+    $('#serviceOrderBillTableBody tr ').remove();
     console.log(response);
     for (var i = 0; i < response.length; i++) {
         var item = response[i];
-        var serviceOrderId = item['id'];
-        var startDAte = getDate(new Date(item['startDate']));
-        var endDate = getDate(new Date(item['endDate']));
-        var serviceName = item['service'].name;
-        var companyName = item['company'].name;
-        var staffBuildingName = item['staffBuilding'].name;
+        var serviceOrderBillId = item['id'];
+        var createDate = getDate(item['dateCreate']);
+        var companyId = item['companyId'];
+        var total = item['total'];
+        var status = item['status'];
+        var tmp;
+        if (status) {
+            tmp = "Đã thanh toán";
+        } else {
+            tmp = `<button value = ${serviceOrderBillId} onclick = 'pay(${serviceOrderBillId})' >Thanh toán</button >`;
+           
+        }
 
-        var trHTML = `<tr id="${serviceOrderId}" value=${serviceOrderId} ondblclick='trUpdateOnDbClick(${serviceOrderId})' >
-                        <td>${serviceOrderId}</td>
-                        <td>${serviceName}</td>
-                        <td>${companyName}</td>
-                        <td>${staffBuildingName}</td>
-                        <td>${startDAte}</td>
-                        <td>${endDate}</td>
-                        <td><Button id="deleteBtn" value=${serviceOrderId} onclick='productDelete(this);'>Xóa</Button></td>
+        var trHTML = `<tr id="${serviceOrderBillId}" value=${serviceOrderBillId} ondblclick='trUpdateOnDbClick(${serviceOrderBillId})' >
+                        <td>${serviceOrderBillId}</td>
+                        <td>${companyId}</td>
+                        <td>${createDate}</td>
+                        <td>${total}</td>
+                        <td>${tmp}</td>
+                        <td><Button id="deleteBtn" value=${serviceOrderBillId} onclick='productDelete(this);'>Xóa</Button></td>
                      </tr>`
         $('#tbListData tbody').append(trHTML);
     }
@@ -69,7 +80,7 @@ function loadData(response) {
 }
 
 function trUpdateOnDbClick(ctl) {
-    dialog.dialog('open');
+    dialog_detail.dialog('open');
     $("#saveBtn").hide();
     $("#updateBtn").show();
     document.getElementById('updateBtn').value = ctl;
@@ -93,6 +104,20 @@ function trUpdateOnDbClick(ctl) {
         $("#endDateOrder").val(endDate);
     }).fail(function (response) {
 
+    })
+}
+
+function pay(ctl) {
+    $.ajax({
+        url: 'http://localhost:8080/order-bill/pay-bill/' + ctl,
+        method: 'GET',
+        data: 'NULL',
+        contentType: 'application/json'
+    }).done(function (response) {
+        alert("Thanh toán thành công");
+        getAll();
+    }).fail(function (response) {
+        alert("Thanh toán không thành công");
     })
 }
 
@@ -135,13 +160,35 @@ function search() {
     console.log("hi");
 }
 
-function btnSaveOnClick() {
-    data = getDataDialog();
+function btnCreateBillOnClick() {
+    var monthCreate = $('#monthSelect').val();
+    if (monthCreate == "") {
+        alert("Vui lòng chọn tháng cần tạo bill");
+        return;
+    }
+    var array = monthCreate.split("-");
+    var month = array[1];
+    var year = array[0];
+    var companyId = $('#companySelect2').val();
+    var data;
+    if (companyId == 0) {
+        data = {
+            "month": month,
+            "year": year
+        };
+    }
+    else {
+        data = {
+            "month": month,
+            "year": year,
+            "companyId": companyId
+        };
+    }
     $.ajax({
         data: JSON.stringify(data),
         contentType: 'application/json',
         type: 'POST',
-        url: 'http://localhost:8080/service-order/insert',
+        url: 'http://localhost:8080/order-bill/create',
     }).done(function (response) {
         getAll();
         btnCancelOnClick();
@@ -173,8 +220,9 @@ function productDelete(ctl) {
     $.ajax({
         contentType: 'application/json',
         type: 'DELETE',
-        url: 'http://localhost:8080/service-order/delete/' + id,
+        url: 'http://localhost:8080/order-bill/delete/' + id,
     }).done(function (response) {
+        alert("Xóa thành công");
         console.log(response);
     }).fail(function (response) {
         console.log(response);
@@ -246,42 +294,14 @@ function btnAddOnClick() {
 }
 
 function btnCancelOnClick() {
-
     dialog.dialog('close');
+    dialog_detail.dialog('close');
 }
 function loadElement() {
-    $('#serviceSelect')
-        .find('option')
-        .remove();
-    $('#serviceSelect2')
-        .find('option')
-        .remove();
-    $("#serviceSelect2").append(new Option("All", 0));
-    $.ajax({
-        contentType: 'application/json',
-        type: 'GET',
-        url: 'http://localhost:8080/service/list',
-    }).done(function (response) {
-        for (var i = 0; i < response.length; i++) {
-            var item = response[i];
-            var serviceId = item['id'];
-            var serviceCode = item['serviceCode'];
-            var name = item['name'];
-            var optionText = serviceCode + "-" + name;
-            $("#serviceSelect").append(new Option(optionText, serviceId));
-            $("#serviceSelect2").append(new Option(optionText, serviceId));
-        }
-    }).fail(function (response) {
-        console.log(response);
-    })
+    $('#companySelect').find('option').remove();
+    $("#companySelect").append(new Option("All", 0));
 
-    // render selection của company
-    $('#companySelect')
-        .find('option')
-        .remove();
-    $('#companySelect2')
-        .find('option')
-        .remove();
+    $('#companySelect2').find('option').remove();
     $("#companySelect2").append(new Option("All", 0));
     $.ajax({
         contentType: 'application/json',
@@ -291,38 +311,12 @@ function loadElement() {
         for (var i = 0; i < response.length; i++) {
             var item = response[i];
             var companyId = item['id'];
-            var name = item['name'];
-            var optionText = name;
+            var companyName = item['name'];
+            var optionText = companyName;
             $("#companySelect").append(new Option(optionText, companyId));
             $("#companySelect2").append(new Option(optionText, companyId));
         }
     }).fail(function (response) {
         console.log(response);
-    })
-
-
-    $('#staffBuildingSelect')
-        .find('option')
-        .remove();
-    $('#staffBuildingSelect2')
-        .find('option')
-        .remove();
-    $("#staffBuildingSelect2").append(new Option("All", 0));
-    $.ajax({
-        contentType: 'application/json',
-        type: 'GET',
-        url: 'http://localhost:8080/staffsbuilding',
-    }).done(function (response) {
-        for (var i = 0; i < response.length; i++) {
-            var item = response[i];
-            var staffId = item['id'];
-            var name = item['name'];
-            var codeStaff = item['codeStaff'];
-            var optionText = codeStaff + "-" + name;
-            $("#staffBuildingSelect").append(new Option(optionText, staffId));
-            $("#staffBuildingSelect2").append(new Option(optionText, staffId));
-        }
-    }).fail(function (response) {
-        console.log(response);
-    })
+    });
 }
