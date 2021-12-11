@@ -69,62 +69,51 @@
             </div>
             <div class="content">
                 <div class="top_content">
-                    <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">
-                        Danh sách hóa đơn dịch vụ
-                    </p>
+                    <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">Danh Sách Lương</p>
                     <button class="adder-custommer" id="btnAdderCustomer">
                         <div class="icon"></div>
-                        <div class="adder_string">Tạo hóa đơn</div>
+                        <div class="adder_string">Tính lương</div>
                     </button>
-                    <div style="display:flex">
-                        <div style="height:30px; vertical-align: middle ">Công ty:</div>
-                        <select id="companySelect2" style="height:15px; width:100px; margin-right: 15px">
-                        </select>
-
-                        <div style="height:30px; vertical-align: middle">Tháng bắt đầu</div>
-                        <div><input type="month" id="startDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
-                        <div style="height:30px; vertical-align: middle">Tháng kết thúc</div>
-                        <div><input type="month" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
-                    </div>
+                    <input type="text" class="searching-item" id="searchService" placeholder="Tìm kiếm theo Mã, Tên hoặc Số điện thoại"
+                           style="height:30px; width:300px" />
                     <button class="refresh-item" onclick='search()'></button>
                 </div>
                 <div class="middle_content">
                     <table id="tbListData" border="0" width="100%">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Mã công ty</th>
-                                <th>Ngày tạo</th>
-                                <th>Tổng tiền</th>
-                                <th>Trạng thái thanh toán</th>
-                                <th></th>
+                                <th>Mã nhân viên</th>
+                                <th>Tên nhân viên</th>
+                                <th>Vị trí</th>
+                                <th>Vị trí</th>
+                                <th>Lương Tổng</th>
+                                <th>Tháng</th>
                             </tr>
                         </thead>
-                        <tbody id="serviceOrderBillTableBody">
+                        <tbody id="salaryTableBody">
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div class="dialog_detail" title="Thông tin tạo hóa đơn">
+        <div class="dialog_detail" title="Thông tin Nhân viên">
             <div class="content_dialog">
                 <div class="right_content">
-                    <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
                     <div class="element">
                         <div class="block_field">
-                            <label>Chọn công ty(<a style="color:#ff0000">*</a>)</label>
-                            <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
-                            </select>
+                            <label>Mã nhân viên(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="0" id="staffBuildingCode" class="b-block_field w-block_field" type="text" />
                         </div>
-                        <div class="block_field1">
-                            <label>Chọn tháng sử dụng(<a style="color:#ff0000">*</a>)</label>
-                            <input type="month" id="monthSelect" class="b-block_field w2-block_field">
-                            </input>
+                        <div class="block_field">
+                            <label>Tháng tính lương(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="1" id="month" class="b-block_field w-block_field" type="text" />
                         </div>
                     </div>
-
-
+                    <div class="block_field">
+                        <label>Năm tính lương(<a style="color:#ff0000">*</a>)</label>
+                        <input tabindex="1" id="year" class="b-block_field w-block_field" type="text" />
+                    </div>
                 </div>
             </div>
             <div class="bottom_dialog">
@@ -132,45 +121,43 @@
                         style="height:30px; width:55px; margin-right:15px">
                     Hủy
                 </button>
-                <button id="createBtn"
+                <button id="saveBtn"
                         style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">
-                    Tạo
+                    Tính Lương
+                </button>
+                <button id="updateBtn"
+                        style="background-color: #019160; height:30px; width:100px; margin-right:15px; border-radius:4px" value="1">
+                    Cập
+                    nhật
                 </button>
             </div>
         </div>
-        <div class="dialog_bill_detail" title="Thông tin danh sách dịch cụ sử dụng">
+        <div class="dialog_daywork" title="Bảng lương chi tiết">
             <div class="content_dialog">
                 <div class="right_content">
-                    <div>
-                        <table id="tbBillDetail" border="0" width="100%">
+                    <div class="middle_content">
+                        <table id="tbListDataDayWork" border="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Mã dịch vụ sử dụng</th>
-                                    <th>Tên dịch vụ</th>
-                                    <th>Ngày bắt đầu sử dụng trong tháng</th>
-                                    <th>Ngày kết thúc sử dụng trong tháng</th>
-                                    <th>Số ngày sử dụng trong tháng</th>
-                                    <th>Số lượng người sử dụng</th>
-                                    <th>Số diện tích đăng kí</th>
-                                    <th>Hệ số nhân</th>
-                                    <th>Tổng tiền</th>
-                                    <th></th>
+                                    <th>Mã chấm công</th>
+                                    <th>Ngày chấm công</th>
                                 </tr>
                             </thead>
-                            <tbody id="serviceBillDetailTableBody">
+                            <tbody id="staffBillTableBody">
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="bottom_dialog_bill">
-                
+            <div class="bottom_dialog">
             </div>
         </div>
+
+    </div>
         <div class="pop-up"></div>
         <script src="../lib/jquery-3.5.1.min.js"></script>
         <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-        <script src="../js/common/ServiceOrderBill.js"></script>
+        <script src="../js/common/Salary.js"></script>
 </body>
 
 </html>

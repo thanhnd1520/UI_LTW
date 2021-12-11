@@ -1,19 +1,18 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     console.log("get data");
     dialog = $(".dialog_detail").dialog({
         autoOpen: false,
         width: 700,
         modal: true
     }),
-    dialog1 = $(".pop-up").dialog({
-        autoOpen: false,
-        modal: true,
-        with: 700,
-        height:150
-    }) ;
+        dialog1 = $(".pop-up").dialog({
+            autoOpen: false,
+            modal: true,
+            with: 700,
+            height: 150
+        });
     $.ajax({
-        url: 'http://localhost:8080/service/list',
+        url: 'http://localhost:8080/staffsbuilding/all',
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
@@ -24,8 +23,8 @@ $(document).ready(function () {
         $('#cancelBtn').click(btnCancelOnClick);
         $('#updateBtn').click(btnUpdateOnClick);
         $('#saveBtn').click(btnSaveOnClick);
-       /* $('#deleteBtn').click(btnDeleteOnClick)*/
-        
+        /* $('#deleteBtn').click(btnDeleteOnClick)*/
+
     }).fail(function (response) {
 
     })
@@ -35,36 +34,31 @@ var id;
 var objectData;
 
 function loadData(response) {
-    $('#serviceTableBody tr ').remove();
+    $('#staffBuildingTableBody tr ').remove();
     console.log(response);
     for (var i = 0; i < response.length; i++) {
         var item = response[i];
-        var serviceId = item['id'];
-        var serviceCode = item['serviceCode'];
-        var name = item['name'];
-        var type = item['type'];
-        var cost = item['cost'];
+        var staffBuildingId = item['id'];
+        var staffBuildingCode = item['codeStaff'];
+        var staffBuildingName = item['name'];
+        var staffBuildingBirthday = item['dateOfBirth'];
+        var staffBuildingAddress = item['address'];
+        var staffBuildingPhone = item['phone'];
+        var staffBuildingLevel = item['level'];
+        var staffBuildingPosition = item['position'];
 
-        console.log(serviceCode);
-        if (serviceId === 1 || serviceId === 2) {
-            var trHTML = `<tr id="${serviceId}" value=${serviceId} ondblclick='trUpdateOnDbClick(${serviceId})' >
-                        <td>${serviceCode}</td>
-                        <td>${name}</td>
-                        <td>${type}</td>
-                        <td>${cost}</td>
-                        <td></td>
+        console.log(staffBuildingId);
+        var trHTML = `<tr id="${staffBuildingId}" value=${staffBuildingId} ondblclick='trUpdateOnDbClick(${staffBuildingId})' >
+                        <td>${staffBuildingCode}</td>
+                        <td>${staffBuildingName}</td>
+                        <td>${staffBuildingBirthday}</td>
+                        <td>${staffBuildingAddress}</td>
+                        <td>${staffBuildingPhone}</td>
+                        <td>${staffBuildingLevel}</td>
+                        <td>${staffBuildingPosition}</td>
+                        <td><Button id="deleteBtn" value=${staffBuildingId} onclick='productDelete(this);'>Xóa</Button></td>
                      </tr>`
-            $('#tbListData tbody').append(trHTML);
-        } else {
-            var trHTML = `<tr id="${serviceId}" value=${serviceId} ondblclick='trUpdateOnDbClick(${serviceId})' >
-                        <td>${serviceCode}</td>
-                        <td>${name}</td>
-                        <td>${type}</td>
-                        <td>${cost}</td>
-                        <td><Button id="deleteBtn" value=${serviceId} onclick='productDelete(this);'>Xóa</Button></td>
-                     </tr>`
-            $('#tbListData tbody').append(trHTML);
-        }
+        $('#tbListData tbody').append(trHTML);
     }
 }
 
@@ -75,16 +69,21 @@ function trUpdateOnDbClick(ctl) {
     document.getElementById('updateBtn').value = ctl;
     /*var id = $(ctl).val();*/
     $.ajax({
-        url: 'http://localhost:8080/service/' + ctl,
+        url: 'http://localhost:8080/staffsbuilding/' + ctl,
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
     }).done(function (response) {
-        $('#serviceCode').val(response["serviceCode"]);
-        $('#serviceName').val(response["name"]);
-        $('#typeService').val(response["type"]);
-        $('#costService').val(response["cost"]);
-        
+        $('#staffBuildingCode').val(response["codeStaff"]);
+        $('#staffBuildingName').val(response["name"]);
+        $('#staffBuildingBirthday').val(response["dateOfBirth"]);
+        $('#staffBuildingAddress').val(response["address"]);
+        $('#staffBuildingPhone').val(response["phone"]);
+        $('#staffBuildingLevel').val(response["level"]);
+        $('#staffBuildingPosition').val(response["position"]);
+        $('#staffBuildingEarnPerDay').val(response["earnPerDay"]);
+
+
     }).fail(function (response) {
 
     })
@@ -92,10 +91,10 @@ function trUpdateOnDbClick(ctl) {
 
 function search() {
     var key = $('#searchService').val();
-    
+
     if (!key) {
         $.ajax({
-            url: 'http://localhost:8080/service/list',
+            url: 'http://localhost:8080/staffsbuilding/all',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -104,9 +103,9 @@ function search() {
         }).fail(function (response) {
 
         })
-    } else if(key === ""){
+    } else if (key === "") {
         $.ajax({
-            url: 'http://localhost:8080/service/list',
+            url: 'http://localhost:8080/staffsbuilding/all',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -115,9 +114,9 @@ function search() {
         }).fail(function (response) {
 
         })
-    }else {
+    } else {
         $.ajax({
-            url: 'http://localhost:8080/service/filter/' + key,
+            url: 'http://localhost:8080/staffsbuilding/filter/' + key,
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -127,7 +126,7 @@ function search() {
 
         })
     }
-    
+
 }
 
 function btnSaveOnClick() {
@@ -136,11 +135,11 @@ function btnSaveOnClick() {
         data: JSON.stringify(data),
         contentType: 'application/json',
         type: 'POST',
-        url: 'http://localhost:8080/service/create',
+        url: 'http://localhost:8080/staffsbuilding/create',
     }).done(function (response) {
         console.log(response);
         $.ajax({
-            url: 'http://localhost:8080/service/list',
+            url: 'http://localhost:8080/staffsbuilding/all',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
@@ -152,7 +151,7 @@ function btnSaveOnClick() {
         })
     }).fail(function (response) {
         console.log(response);
-        
+
     });
     btnCancelOnClick();
 }
@@ -160,7 +159,7 @@ function btnSaveOnClick() {
 function btnUpdateOnClick() {
     objectData = getDataDialog();
     var id = $('#updateBtn').val();
-    var tmp = 'http://localhost:8080/service/update/' + id;
+    var tmp = 'http://localhost:8080/staffsbuilding/update/' + id;
     $.ajax({
         url: tmp,
         method: 'POST',
@@ -168,15 +167,17 @@ function btnUpdateOnClick() {
         contentType: 'application/json'
     }).done(function (response) {
         $.ajax({
-            url: 'http://localhost:8080/service/list',
+            url: 'http://localhost:8080/staffsbuilding/all',
             method: 'GET',
             data: 'NULL',
             contentType: 'application/json'
-        }).done(function (s) {
-            loadData(s);
-        }).fail(function (s) {
+        }).done(function (response) {
+            loadData(response);
+        }).fail(function (response) {
 
         })
+
+
     }).fail(function (response) {
         alert("cập nhật không thành công");
     });
@@ -190,7 +191,7 @@ function productDelete(ctl) {
     $.ajax({
         contentType: 'application/json',
         type: 'DELETE',
-        url: 'http://localhost:8080/service/delete/' + id,
+        url: 'http://localhost:8080/staffsbuilding/delete/' + id,
     }).done(function (response) {
         console.log(response);
     }).fail(function (response) {
@@ -200,17 +201,28 @@ function productDelete(ctl) {
 
 function getDataDialog() {
     var check = true;
-    var code = $('#serviceCode').val();
-    var name = $('#serviceName').val();
-    var type = $('#typeService').val();
-    var cost = $('#costService').val();
-    
-    
+    var code = $('#staffBuildingCode').val();
+    var name = $('#staffBuildingName').val();
+    var birthday = $('#staffBuildingBirthday').val();
+    var address = $('#staffBuildingAddress').val();
+    var phone = $('#staffBuildingPhone').val();
+    var level = $('#staffBuildingLevel').val();
+    var position = $('#staffBuildingPosition').val();
+    var earnPerDay = $('#staffBuildingEarnPerDay').val();
+ 
+   
+
+
+
     var Data = {
-        "serviceCode": code,
+        "codeStaff": code,
         "name": name,
-        "type": type,
-        "cost": cost,
+        "dateOfBirth": birthday,
+        "address": address,
+        "phone": phone,
+        "level": level,
+        "position": position,
+        "earnPerDay": earnPerDay,
     };
     console.log(Data);
     return Data;
@@ -233,6 +245,6 @@ function btnAddOnClick() {
 }
 
 function btnCancelOnClick() {
-    
+
     dialog.dialog('close');
 }

@@ -70,21 +70,25 @@
             <div class="content">
                 <div class="top_content">
                     <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">
-                        Danh sách hóa đơn dịch vụ
+                        Danh sách hợp đồng
                     </p>
                     <button class="adder-custommer" id="btnAdderCustomer">
                         <div class="icon"></div>
-                        <div class="adder_string">Tạo hóa đơn</div>
+                        <div class="adder_string">Thêm hợp đồng</div>
                     </button>
                     <div style="display:flex">
-                        <div style="height:30px; vertical-align: middle ">Công ty:</div>
-                        <select id="companySelect2" style="height:15px; width:100px; margin-right: 15px">
-                        </select>
+                        <div style="height:30px; vertical-align: middle">Mã công ty</div>
+                        <div>
+                            <input type="text" id="searchContract" placeholder="Mã công ty"
+                                   style="height:30px; width:100px; margin-right: 15px" />
+                        </div>
+                        <div style="height:30px; vertical-align: middle ">ngày bắt đầu</div>
+                        <div><input type="date" id="searchStartDate" style="height:30px; width:100px; margin-right: 15px" /></div>
+                        <div style="height:30px; vertical-align: middle">ngày kết thúc</div>
+                        <div><input type="date" id="searchEndDate" style="height:30px; width:100px; margin-right: 15px" /></div>
+                        <button class="btn btn-danger" onclick="findStatus()">Công ty đã thanh toán</button>
 
-                        <div style="height:30px; vertical-align: middle">Tháng bắt đầu</div>
-                        <div><input type="month" id="startDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
-                        <div style="height:30px; vertical-align: middle">Tháng kết thúc</div>
-                        <div><input type="month" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+
                     </div>
                     <button class="refresh-item" onclick='search()'></button>
                 </div>
@@ -92,39 +96,74 @@
                     <table id="tbListData" border="0" width="100%">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Mã công ty</th>
-                                <th>Ngày tạo</th>
+                                <th>Người thuê</th>
+                                <th>Tên công ty</th>
+                                <th>Tên phòng</th>
+                                <th>Mô tả</th>
+                                <th>Diện tích</th>
+                                <th>Giá thành</th>
+                                <th>Ngày thuê</th>
+                                <th>Ngày thanh toán</th>
                                 <th>Tổng tiền</th>
-                                <th>Trạng thái thanh toán</th>
+                                <th>Trạng thái</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="serviceOrderBillTableBody">
+                        <tbody id="contractTableBody">
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div class="dialog_detail" title="Thông tin tạo hóa đơn">
+        <div class="dialog_detail" title="Thông tin hợp đồng">
             <div class="content_dialog">
                 <div class="right_content">
                     <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
                     <div class="element">
+                        <div class="block_field1">
+                            <label>Người thuê(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="0" id="name" class="b-block_field w-block_field" type="text" />
+                        </div>
                         <div class="block_field">
                             <label>Chọn công ty(<a style="color:#ff0000">*</a>)</label>
-                            <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
-                            </select>
+                                <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
+                                </select>
                         </div>
                         <div class="block_field1">
-                            <label>Chọn tháng sử dụng(<a style="color:#ff0000">*</a>)</label>
-                            <input type="month" id="monthSelect" class="b-block_field w2-block_field">
-                            </input>
+                            <label>Chọn phòng(<a style="color:#ff0000">*</a>)</label>
+                                <select tabindex="2" id="roomSelect" class="b-block_field w2-block_field">
+                                </select>
                         </div>
                     </div>
-
-
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Mô tả(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="0" id="description" class="b-block_field w-block_field" type="text" />
+                        </div>
+                        <div class="block_field1">
+                            <label>Diện tích(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="1" id="square" class="b-block_field w-block_field" type="number" />
+                        </div>
+                        <div class="block_field1">
+                            <label>Giá thành(<a style="color:#ff0000">*</a>)</label>
+                            <input required="must have" tabindex="2" id="costPerSquare" class="b-block_field w-block_field" type="number" />
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Ngày thuê</label>
+                            <input tabindex="0" id="startDate"  type="" min="1997-01-01" max="2030-12-31"/>
+                        </div>
+                        <div class="block_field">
+                            <label>Ngày thanh toán</label>
+                            <input tabindex="1" id="endDate"  type="" min="1997-01-01" max="2030-12-31" />
+                        </div>
+                        <div class="block_field">
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
             <div class="bottom_dialog">
@@ -132,45 +171,21 @@
                         style="height:30px; width:55px; margin-right:15px">
                     Hủy
                 </button>
-                <button id="createBtn"
+                <button id="saveBtn"
                         style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">
-                    Tạo
+                    Lưu
                 </button>
-            </div>
-        </div>
-        <div class="dialog_bill_detail" title="Thông tin danh sách dịch cụ sử dụng">
-            <div class="content_dialog">
-                <div class="right_content">
-                    <div>
-                        <table id="tbBillDetail" border="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Mã dịch vụ sử dụng</th>
-                                    <th>Tên dịch vụ</th>
-                                    <th>Ngày bắt đầu sử dụng trong tháng</th>
-                                    <th>Ngày kết thúc sử dụng trong tháng</th>
-                                    <th>Số ngày sử dụng trong tháng</th>
-                                    <th>Số lượng người sử dụng</th>
-                                    <th>Số diện tích đăng kí</th>
-                                    <th>Hệ số nhân</th>
-                                    <th>Tổng tiền</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="serviceBillDetailTableBody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom_dialog_bill">
-                
+                <button id="updateBtn"
+                        style="background-color: #019160; height:30px; width:100px; margin-right:15px; border-radius:4px">
+                    Cập
+                    nhật
+                </button>
             </div>
         </div>
         <div class="pop-up"></div>
         <script src="../lib/jquery-3.5.1.min.js"></script>
         <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-        <script src="../js/common/ServiceOrderBill.js"></script>
+        <script src="../js/common/Contract.js"></script>
 </body>
 
 </html>

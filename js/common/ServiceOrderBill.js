@@ -205,10 +205,18 @@ function btnCreateBillOnClick() {
         type: 'POST',
         url: 'http://localhost:8080/order-bill/create',
     }).done(function (response) {
+        var code = response['code'];
+        var message = response['message'];
+        if (code === 400) {
+            alert(message);
+            return;
+        }
         getAll();
         btnCancelOnClick();
     }).fail(function (response) {
         console.log(response);
+        getAll();
+        btnCancelOnClick();
     })
 }
 

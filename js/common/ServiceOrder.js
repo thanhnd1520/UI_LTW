@@ -311,7 +311,7 @@ function loadElement() {
     $.ajax({
         contentType: 'application/json',
         type: 'GET',
-        url: 'http://localhost:8080/staffsbuilding',
+        url: 'http://localhost:8080/staffsbuilding/all',
     }).done(function (response) {
         for (var i = 0; i < response.length; i++) {
             var item = response[i];
