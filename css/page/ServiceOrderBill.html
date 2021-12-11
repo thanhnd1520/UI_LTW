@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/main.css" rel="stylesheet" />
+    <link href="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+    <title></title>
+</head>
+
+<body>
+    <div class="left-panel">
+        <div class="logo">
+            <div class="expend-icon"></div>
+            <div style="font:80px">QLTN</div>
+        </div>
+        <div class="menu">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-setting"></div>
+                <div class="menu--text">HOME</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý công ty</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-report"></div>
+                <div class="menu--text">Quản lý nhân viên công ty</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý nhân viên tòa nhà</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/employee.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Quản lý dịch vụ</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Quản lý dịch vụ sử dụng</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính Lương</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrderBill.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí dịch vụ</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí thuê</div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="header">
+                <div>
+                    <h1>Tòa Nhà PTIT</h1>
+                </div>
+                <div class="user__item">
+                    <div class="avatar-icon"></div>
+                    <p style="font-size:13px">Nguyễn Đình Thành</p>
+                    <div class="option-icon"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="top_content">
+                    <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">
+                        Danh sách hóa đơn dịch vụ
+                    </p>
+                    <button class="adder-custommer" id="btnAdderCustomer">
+                        <div class="icon"></div>
+                        <div class="adder_string">Tạo hóa đơn</div>
+                    </button>
+                    <div style="display:flex">
+                        <div style="height:30px; vertical-align: middle ">Công ty:</div>
+                        <select id="companySelect2" style="height:15px; width:100px; margin-right: 15px">
+                        </select>
+
+                        <div style="height:30px; vertical-align: middle">Tháng bắt đầu</div>
+                        <div><input type="month" id="startDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+                        <div style="height:30px; vertical-align: middle">Tháng kết thúc</div>
+                        <div><input type="month" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+                    </div>
+                    <button class="refresh-item" onclick='search()'></button>
+                </div>
+                <div class="middle_content">
+                    <table id="tbListData" border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mã công ty</th>
+                                <th>Ngày tạo</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái thanh toán</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceOrderBillTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog_detail" title="Thông tin tạo hóa đơn">
+            <div class="content_dialog">
+                <div class="right_content">
+                    <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Chọn công ty(<a style="color:#ff0000">*</a>)</label>
+                            <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
+                            </select>
+                        </div>
+                        <div class="block_field1">
+                            <label>Chọn tháng sử dụng(<a style="color:#ff0000">*</a>)</label>
+                            <input type="month" id="monthSelect" class="b-block_field w2-block_field">
+                            </input>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="bottom_dialog">
+                <button id="cancelBtn" class="b-block_field"
+                        style="height:30px; width:55px; margin-right:15px">
+                    Hủy
+                </button>
+                <button id="createBtn"
+                        style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">
+                    Tạo
+                </button>
+            </div>
+        </div>
+        <div class="dialog_bill_detail" title="Thông tin danh sách dịch cụ sử dụng">
+            <div class="content_dialog">
+                <div class="right_content">
+                    <div>
+                        <table id="tbBillDetail" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Mã dịch vụ sử dụng</th>
+                                    <th>Tên dịch vụ</th>
+                                    <th>Ngày bắt đầu sử dụng trong tháng</th>
+                                    <th>Ngày kết thúc sử dụng trong tháng</th>
+                                    <th>Số ngày sử dụng trong tháng</th>
+                                    <th>Số lượng người sử dụng</th>
+                                    <th>Số dịch tích đăng kí</th>
+                                    <th>Hệ số nhân</th>
+                                    <th>Tổng tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="serviceBillDetailTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom_dialog_bill">
+                
+            </div>
+        </div>
+        <div class="pop-up"></div>
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+        <script src="../js/common/ServiceOrderBill.js"></script>
+</body>
+
+</html>

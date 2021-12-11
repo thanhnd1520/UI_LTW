@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/main.css" rel="stylesheet" />
+    <link href="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+    <title></title>
+</head>
+
+<body>
+    <div class="left-panel">
+        <div class="logo">
+            <div class="expend-icon"></div>
+            <div style="font:80px">QLTN</div>
+        </div>
+        <div class="menu">
+            <div class="menu__item">
+                <div class="menu--icon icon-setting"></div>
+                <div class="menu--text">HOME</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý công ty</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-report"></div>
+                <div class="menu--text">Quản lý nhân viên công ty</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý nhân viên tòa nhà</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Quản lý dịch vụ</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính Lương</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí dịch vụ</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí thuê</div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="header">
+                <div>
+                    <h1>Tòa Nhà PTIT</h1>
+                </div>
+                <div class="user__item">
+                    <div class="avatar-icon"></div>
+                    <p style="font-size:13px">Nguyễn Đình Thành</p>
+                    <div class="option-icon"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="top_content">
+                    <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">Danh sách dịch vụ tòa nhà</p>
+                    <button class="adder-custommer" id="btnAdderCustomer">
+                        <div class="icon"></div>
+                        <div class="adder_string">Thêm dịch vụ</div>
+                    </button>
+                    <input type="text" class="searching-item" id="searchService" placeholder="Tìm kiếm theo Mã, Tên hoặc Số điện thoại"
+                        style="height:30px; width:300px" />
+                    <button class="refresh-item" onclick='search()'></button>
+                </div>
+                <div class="middle_content">
+                    <table id="tbListData" border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Mã mã dịch vụ</th>
+                                <th>tên dịch vụ</th>
+                                <th>Kiểu dịch vụ</th>
+                                <th>Giá dịch vụ</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog_detail" title="Thông tin dịch vụ">
+            <div class="content_dialog">
+                <!--<div class="left_content">
+                    <div class="avatar"></div>
+                    <p style="text-align:center">Vui lòng chọn ảnh có định dạng</p>
+                    <p style="text-align:center">.jpg .jpeg .jng .gif</p>
+                </div>-->
+                <div class="right_content">
+                    <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Mã dịch vụ(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="0" id="serviceCode" class="b-block_field w-block_field" type="text" />
+                        </div>
+                        <div class="block_field1">
+                            <label>Tên dịch vụ(<a style="color:#ff0000">*</a>)</label>
+                            <input tabindex="1" id="serviceName" class="b-block_field w-block_field" type="text" />
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Kiểu dịch vụ</label>
+                            <input tabindex="2" id="typeService" class="b-block_field w1-block_field" type="text" />
+                        </div>
+                        <div class="block_field">
+                            <label>Giá thành</label>
+                            <input tabindex="3" id="costService" class="b-block_field w1-block_field" type="text" />
+                        </div>
+                    </div>
+                    <!--<div class="element">
+        <div class="block_field">
+            <label>Số CMTND/Căn cước(<a style="color:#ff0000">*</a>)</label>
+            <input tabindex="4" id="identityCardCodeIN" class="b-block_field w-block_field"
+                type="text" />
+        </div>
+        <div class="block_field1">
+            <label>Ngày cấp</label>
+            <input tabindex="5" id="identityCardDateIN" class="b-block_field w1-block_field"
+                type="date" />
+        </div>
+    </div>
+    <div class="element">
+        <div class="block_field">
+            <label>Nơi cấp</label>
+            <input tabindex="6" id="identityCardPalceIN" class="b-block_field w-block_field"
+                type="text" />
+        </div>
+
+    </div>
+    <div class="element">
+        <div class="block_field">
+            <label>Email(<a style="color:#ff0000">*</a>)</label>
+            <input tabindex="7" id="emailIN" class="b-block_field w-block_field" type="email" />
+        </div>
+        <div class="block_field1">
+            <label>Số điện thoại(<a style="color:#ff0000">*</a>)</label>
+            <input tabindex="8" id="phoneNumberIN" class="b-block_field w-block_field" type="text" />
+        </div>
+    </div>
+    <div style="height:10px"></div>
+    <label style="padding-top:20px; font-size:18px">B.THÔNG TIN CÔNG VIỆC</label>
+    <div class="element">
+        <div class="block_field">
+            <label>Vị trí</label>
+            <select tabindex="9" id="positionIN" class="b-block_field w2-block_field">
+                <option>Giám đốc</option>
+                <option>Trưởng phòng</option>
+                <option>Phó phòng</option>
+                <option>Quản lý</option>
+                <option>Nhân viên</option>
+            </select>
+        </div>
+        <div class="block_field1">
+            <label>Phòng ban</label>
+            <select tabindex="10" id="departmentIN" class="b-block_field w2-block_field">
+                <option>Phòng nhân sự</option>
+                <option>Phòng kinh doanh</option>
+                <option>Phòng nghiên cứu</option>
+                <option>Phòng đào tạo</option>
+            </select>
+        </div>
+    </div>
+    <div class="element">
+        <div class="block_field">
+            <label>Mã số thuế cá nhân</label>
+            <input tabindex="11" id="textCodeIN" class="b-block_field w-block_field" type="text" />
+        </div>
+        <div class="block_field1">
+            <label>Mức lương cơ bản</label>
+            <input tabindex="12" id="salaryIN" class="b-block_field w-block_field" type="text" />
+        </div>
+    </div>
+    <div class="element">
+        <div class="block_field">
+            <label>Ngày gia nhập công ty</label>
+            <input tabindex="13" id="dateJoin" class="b-block_field w1-block_field" type="date" />
+        </div>
+        <div class="block_field1">
+            <label>Tình trạng công việc</label>
+            <select tabindex="14" id="statusJobIN" class="b-block_field w2-block_field">
+                <option value="1">Đang làm việc</option>
+                <option value="0">Đã nghỉ việc</option>
+            </select>
+        </div>
+    </div>-->
+                </div>
+            </div>
+            <div class="bottom_dialog">
+                <button id="cancelBtn" class="b-block_field"
+                    style="height:30px; width:55px; margin-right:15px">Hủy</button>
+                <button id="saveBtn"
+                    style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">Lưu</button>
+                <button id="updateBtn"
+                    style="background-color: #019160; height:30px; width:100px; margin-right:15px; border-radius:4px" value="1">Cập
+                    nhật</button>
+            </div>
+        </div>
+        <div class="pop-up"></div>
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+        <script src="../js/common/Employee.js"></script>
+</body>
+
+</html>

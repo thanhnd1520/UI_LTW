@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/main.css" rel="stylesheet" />
+    <link href="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+    <title></title>
+</head>
+
+<body>
+    <div class="left-panel">
+        <div class="logo">
+            <div class="expend-icon"></div>
+            <div style="font:80px">QLTN</div>
+        </div>
+        <div class="menu">
+            <div class="menu__item">
+                <div class="menu--icon icon-setting"></div>
+                <div class="menu--text">HOME</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý công ty</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-report"></div>
+                <div class="menu--text">Quản lý nhân viên công ty</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-dashboard"></div>
+                <div class="menu--text">Quản lý nhân viên tòa nhà</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Quản lý dịch vụ</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính Lương</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí dịch vụ</div>
+            </div>
+            <div class="menu__item">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Tính phí thuê</div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="header">
+                <div>
+                    <h1>Tòa Nhà PTIT</h1>
+                </div>
+                <div class="user__item">
+                    <div class="avatar-icon"></div>
+                    <p style="font-size:13px">Nguyễn Đình Thành</p>
+                    <div class="option-icon"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="top_content">
+                    <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">
+                        Danh sách dịch vụ sử dụng
+                    </p>
+                    <button class="adder-custommer" id="btnAdderCustomer">
+                        <div class="icon"></div>
+                        <div class="adder_string">Thêm dịch vụ</div>
+                    </button>
+                    <div style="display:flex">
+                        <div style="height:30px; vertical-align: middle ">Công ty:</div>
+                            <select id="companySelect2" style="height:15px; width:100px; margin-right: 15px">
+                            </select>
+
+                            <div style="height:30px; vertical-align: middle ">Dịch vụ:</div>
+                            <select id="serviceSelect2" style="height:15px; width:100px; margin-right: 15px">
+                            </select>
+
+                            <div style="height:30px; vertical-align: middle ">Nhân viên:</div>
+                            <select id="staffBuildingSelect2" style="height:15px; width:100px; margin-right: 15px">
+                            </select>
+                        <div style="height:30px; vertical-align: middle ">ngày bắt đầu</div>
+                        <div><input type="date" id="startDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+                        <div style="height:30px; vertical-align: middle">ngày kết thúc</div>
+                        <div><input type="date" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+
+
+
+                    </div>
+                    <button class="refresh-item" onclick='search()'></button>
+                </div>
+                <div class="middle_content">
+                    <table id="tbListData" border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên dịch vụ</th>
+                                <th>Tên công ty</th>
+                                <th>Nhân viên phục vụ</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceOrderTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog_detail" title="Thông tin dịch vụ sử dụng">
+            <div class="content_dialog">
+                <div class="right_content">
+                    <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Chọn công ty(<a style="color:#ff0000">*</a>)</label>
+                                <select tabindex="1" id="companySelect" class="b-block_field w2-block_field">
+                                </select>
+                        </div>
+                        <div class="block_field1">
+                            <label>Chọn dịch vụ(<a style="color:#ff0000">*</a>)</label>
+                                <select tabindex="2" id="serviceSelect" class="b-block_field w2-block_field">
+                                </select>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Ngày bắt đầu</label>
+                            <input tabindex="3" id="startDateOrder" class="b-block_field w1-block_field" type="date" />
+                        </div>
+                        <div class="block_field">
+                            <label>Ngày kết thúc</label>
+                            <input tabindex="4" id="endDateOrder" class="b-block_field w1-block_field" type="date" />
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="block_field">
+                            <label>Chọn nhân viên(<a style="color:#ff0000">*</a>)</label>
+                            <select tabindex="5" id="staffBuildingSelect" class="b-block_field w2-block_field">
+                            </select>
+                        </div>
+                        <div class="block_field1">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="bottom_dialog">
+                <button id="cancelBtn" class="b-block_field"
+                        style="height:30px; width:55px; margin-right:15px">
+                    Hủy
+                </button>
+                <button id="saveBtn"
+                        style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">
+                    Lưu
+                </button>
+                <button id="updateBtn"
+                        style="background-color: #019160; height:30px; width:100px; margin-right:15px; border-radius:4px">
+                    Cập
+                    nhật
+                </button>
+            </div>
+        </div>
+        <div class="pop-up"></div>
+        <script src="../lib/jquery-3.5.1.min.js"></script>
+        <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+        <script src="../js/common/ServiceOrder.js"></script>
+</body>
+
+</html>

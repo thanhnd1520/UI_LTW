@@ -1,0 +1,86 @@
+﻿@import url('common/menu.css');
+@import url('common/header.css');
+@import url('common/content.css');
+@import url('component/dialog.css');
+
+body {
+    margin: 0;
+    font-family: GoogleSans-Italic;
+    font-size: 10px;
+}
+
+@font-face {
+    font-family: 'GoogleSans-Black';
+    src: url('../../content/font/GoogleSans-Black.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'GoogleSans-Italic';
+    src: url('../../content/font/GoogleSans-Italic.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'GoogleSans-Bold';
+    src: url('../content/font/GoogleSans-Bold.otf') format('opentype');
+}
+
+.left-panel {
+    width: 200px;
+    height: 100vh;
+    border-right: 2px solid #c3b4b4;
+}
+
+.right-panel {
+    position: absolute;
+    top: 0px;
+    left: 200px;
+    width: calc(100% - 200px);
+    height: 100vh;
+}
+
+.left-panel .logo {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 60px;
+}
+
+.logo .expend-icon {
+    margin-right: 10px;
+    margin-bottom:12px;
+    margin-top:12px;
+    margin-left:16px;
+    width: 24px;
+    height: 24px;
+    background-image: url('../content/img/toggle.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.logo-page {
+    width: 150px;
+    height: 24px;
+    background-image: url('../content/img/cukcuk-logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+tr {
+    height: 25px;
+    text-align: left;
+}
+
+th, td {
+    border-bottom: solid #000000 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+table tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #ebe9e9;
+}

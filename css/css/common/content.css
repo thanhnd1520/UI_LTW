@@ -1,0 +1,130 @@
+﻿.content {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: calc(100% - 50px);
+}
+
+.content .top_content {
+    width: 100%;
+    height: 100px;
+    display:block;
+}
+
+.content .bottom-content{
+    width: 100px;
+    height:50px;
+}
+/* css cho table*/
+.middle_content {
+    width: 100%;
+    height: calc(100% - 100px - 50px);
+    overflow: auto;
+}
+
+table {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+    table tbody tr:hover {
+        background-color: #e5e5e5;
+    }
+    /* end */
+
+
+    table th, td {
+        padding: 10px;
+        padding-right: 16px;
+        padding-left: 16px;
+        border-bottom: 1px solid #bbbbbb;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+.top_content .haft-top{
+    width:100%;
+}
+
+.content .top_content .adder-custommer {
+    position: absolute ;
+    display: flex;
+    align-items: center;
+    right: 16px;
+    top:10px;
+    height: 40px;
+    background-color: #01B075;
+    border-radius: 3px;
+    border: none;
+}
+
+.content .top_content .adder-custommer .icon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    background-image: url('../../content/icon/add.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.content .top_content .adder-custommer .adder_string {
+    position: relative;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.content .top_content .searching-item {
+    position: absolute;
+    top: 60px;
+    left: 16px;
+    width: 200px;
+    height: 40px;
+    font-size: 13px;
+    border-radius:4px;
+}
+
+.content .top_content .refresh-item {
+    position: absolute;
+    right: 16px;
+    top: 60px;
+    width: 25px;
+    height: 25px;
+    border: solid #000000 1px;
+    border-radius: 3px;
+    background-image: url('../../content/icon/refresh.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.content .top_content .filler-item {
+    position: relative;
+    top: 60px;
+    margin-left:16px;
+    width: 150px;
+    height: 40px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+.content .top_content .refresh-item:hover {
+    cursor: pointer;
+}
+
+.content .top_content .adder-custommer:hover {
+    cursor: pointer;
+}
+
+table tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+table tr:nth-child(even) {
+    background-color: white;
+}
+
+table tr:nth-child(1) {
+    background-color: skyblue;
+}
