@@ -156,7 +156,16 @@ function btnUpdateOnClick() {
         data: JSON.stringify(objectData),
         contentType: 'application/json'
     }).done(function (response) {
+        $.ajax({
+            url: 'http://localhost:8080/service/list',
+            method: 'GET',
+            data: 'NULL',
+            contentType: 'application/json'
+        }).done(function (s) {
+            loadData(s);
+        }).fail(function (s) {
 
+        })
     }).fail(function (response) {
         alert("cập nhật không thành công");
     });

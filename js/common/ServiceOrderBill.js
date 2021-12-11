@@ -83,25 +83,37 @@ function trUpdateOnDbClick(ctl) {
     dialog_detail.dialog('open');
     $("#saveBtn").hide();
     $("#updateBtn").show();
-    document.getElementById('updateBtn').value = ctl;
-    loadElement();
     $.ajax({
-        url: 'http://localhost:8080/service-order/' + ctl,
+        url: 'http://localhost:8080/order-bill/get/' + ctl,
         method: 'GET',
         data: 'NULL',
         contentType: 'application/json'
     }).done(function (response) {
-        var startDate = getDateImport(new Date(response['startDate']));
-        var endDate = getDateImport(new Date(response['endDate']));
-        var serviceId = response['service'].id;
-        var companyId = response['company'].id;
-        var staffBuildingId = response['staffBuilding'].id;
-
-        $("#companySelect").val(companyId);
-        $('#serviceSelect').val(serviceId);
-        $("#staffBuildingSelect").val(staffBuildingId);
-        $("#startDateOrder").val(startDate);
-        $("#endDateOrder").val(endDate);
+        console.log(response);
+        $('#serviceBillDetailTableBody tr ').remove();
+        for (var i = 0; i < response.length; i++) {
+            var item = response[i];
+            var serviceOrderId = item['serviceOrderId'];
+            var startDate = getDate(item['startDate']);
+            var endDate = getDate(item['endDate']);
+            var serviceName = item['serviceName'];
+            var numberDay = item['numberDay'];
+            var tiSuat = item['tiSuat'];
+            var soNguoiSuDung = item['soNguoiSuDung'];
+            var dienTichSan = item['dienTichSan'];
+            var total = item['total'];
+            var trHTML = `<tr><td>${serviceOrderId}</td>
+                        <td>${serviceName}</td>
+                        <td>${startDate}</td>
+                        <td>${endDate}</td>
+                        <td>${numberDay}</td>
+                        <td>${soNguoiSuDung}</td>
+                        <td>${dienTichSan}</td>
+                        <td>${tiSuat}</td>
+                        <td>${total}</td>
+                     </tr>`
+            $('#tbBillDetail tbody').append(trHTML);
+        }
     }).fail(function (response) {
 
     })
@@ -123,39 +135,42 @@ function pay(ctl) {
 
 function search() {
     var companyId = $('#companySelect2').val();
-    var serviceId = $('#serviceSelect2').val();
-    var staffBuildingId = $('#staffBuildingSelect2').val();
-    var startDate = new Date($('#startDateOrder2').val()).getTime();
-    var endDate = new Date($('#endDateOrder2').val()).getTime();
+    var startDate = $('#startDateOrder2').val();
+    var endDate = $('#endDateOrder2').val();
+    var startMonth = -1;
+    var startYear = -1;
+    var endMonth = -1;
+    var endYear = -1;
     if (isNaN(startDate) || isNaN(endDate)) {
-        startDate = -1;
-        endDate = -1;
+        var array1 = startDate.split("-");
+        var array2 = endDate.split("-");
+        startMonth = array1[1];
+        startYear = array1[0];
+        endMonth = array2[1];
+        endYear = array2[0];
+    } else {
+       
     }
     if (companyId == 0) {
         companyId = -1;
     }
-    if (serviceId == 0) {
-        serviceId = -1;
-    }
-    if (staffBuildingId == 0) {
-        staffBuildingId = -1;
-    }
+    
     var data = {
         "companyId": companyId,
-        "serviceId": serviceId,
-        "staffBuildingId": staffBuildingId,
-        "startDate": startDate,
-        "endDate":endDate
+        "startMonth": startMonth,
+        "startYear": startYear,
+        "endMonth": endMonth,
+        "endYear": endYear
     }
     $.ajax({
-        url: 'http://localhost:8080/service-order/filter',
+        url: 'http://localhost:8080/order-bill/filter',
         method: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json'
     }).done(function (response) {
         loadData(response);
     }).fail(function (response) {
-
+        console.log(response);
     });
     console.log("hi");
 }
@@ -197,21 +212,6 @@ function btnCreateBillOnClick() {
     })
 }
 
-function btnUpdateOnClick() { // chưa có api
-    objectData = getDataDialog();
-    var id = $('#updateBtn').val();
-    var tmp = 'http://localhost:8080/service-order/update/' + id;
-    $.ajax({
-        url: tmp,
-        method: 'POST',
-        data: JSON.stringify(objectData),
-        contentType: 'application/json'
-    }).done(function (response) {
-
-    }).fail(function (response) {
-        alert("cập nhật không thành công");
-    });
-}
 
 function productDelete(ctl) {
     var id = $(ctl).val();
@@ -266,26 +266,6 @@ function getDateImport(date) {
     return output;
 }
 
-function getGender(gender) {
-    if (gender == 1)
-        return "Nam";
-    if (gender == 2)
-        return "Khác";
-    if (gender == 0)
-        return "Nữ";
-    return "";
-}
-function getStatusJob(status) {
-    if (status == 1)
-        return "Đang làm việc";
-    if (status == 2)
-        return "Đang thử việc";
-    if (status == 3)
-        return "Đã nghỉ hưu";
-    if (status == 0)
-        return "Đã nghỉ việc";
-    return "";
-}
 function btnAddOnClick() {
     dialog.dialog('open');
     $("#updateBtn").hide();

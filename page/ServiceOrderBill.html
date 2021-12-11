@@ -15,35 +15,39 @@
             <div style="font:80px">QLTN</div>
         </div>
         <div class="menu">
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-setting"></div>
                 <div class="menu--text">HOME</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-dashboard"></div>
                 <div class="menu--text">Quản lý công ty</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-report"></div>
                 <div class="menu--text">Quản lý nhân viên công ty</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-dashboard"></div>
                 <div class="menu--text">Quản lý nhân viên tòa nhà</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/employee.html';">
                 <div class="menu--icon icon-employee"></div>
                 <div class="menu--text">Quản lý dịch vụ</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
+                <div class="menu--icon icon-employee"></div>
+                <div class="menu--text">Quản lý dịch vụ sử dụng</div>
+            </div>
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-employee"></div>
                 <div class="menu--text">Tính Lương</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrderBill.html';">
                 <div class="menu--icon icon-employee"></div>
                 <div class="menu--text">Tính phí dịch vụ</div>
             </div>
-            <div class="menu__item">
+            <div class="menu__item" onclick="window.location.href='http://localhost:52853/page/ServiceOrder.html';">
                 <div class="menu--icon icon-employee"></div>
                 <div class="menu--text">Tính phí thuê</div>
             </div>
@@ -62,7 +66,7 @@
             <div class="content">
                 <div class="top_content">
                     <p style="padding-left:10px;font-size:20px;vertical-align:central;padding-top:0px">
-                        Danh sách dịch vụ sử dụng
+                        Danh sách hóa đơn dịch vụ
                     </p>
                     <button class="adder-custommer" id="btnAdderCustomer">
                         <div class="icon"></div>
@@ -74,7 +78,7 @@
                         </select>
 
                         <div style="height:30px; vertical-align: middle">Tháng bắt đầu</div>
-                        <div><input type="month" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
+                        <div><input type="month" id="startDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
                         <div style="height:30px; vertical-align: middle">Tháng kết thúc</div>
                         <div><input type="month" id="endDateOrder2" style="height:15px; width:100px; margin-right: 15px" /></div>
                     </div>
@@ -99,7 +103,7 @@
             </div>
         </div>
 
-        <div class="dialog_detail" title="Thông tin dịch vụ sử dụng">
+        <div class="dialog_detail" title="Thông tin tạo hóa đơn">
             <div class="content_dialog">
                 <div class="right_content">
                     <!-- <label style="font-size:18px">A.THÔNG TIN CHUNG</label>-->
@@ -130,42 +134,33 @@
                 </button>
             </div>
         </div>
-        <div class="dialog_bill_detail" title="Thông tin dịch vụ sử dụng">
+        <div class="dialog_bill_detail" title="Thông tin danh sách dịch cụ sử dụng">
             <div class="content_dialog">
                 <div class="right_content">
                     <div>
                         <table id="tbBillDetail" border="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Mã dịch vụ</th>
+                                    <th>Mã dịch vụ sử dụng</th>
                                     <th>Tên dịch vụ</th>
-                                    <th>Ngày bắt đầu</th>
-                                    <th>Ngày kết thúc</th>
+                                    <th>Ngày bắt đầu sử dụng trong tháng</th>
+                                    <th>Ngày kết thúc sử dụng trong tháng</th>
                                     <th>Số ngày sử dụng trong tháng</th>
+                                    <th>Số lượng người sử dụng</th>
+                                    <th>Số dịch tích đăng kí</th>
+                                    <th>Hệ số nhân</th>
                                     <th>Tổng tiền</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody id="serviceOrderTableBody">
+                            <tbody id="serviceBillDetailTableBody">
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <div class="bottom_dialog_bill">
-                <button id="cancelBtn" class="b-block_field"
-                        style="height:30px; width:55px; margin-right:15px">
-                    Hủy
-                </button>
-                <button id="saveBtn"
-                        style="background-color: #019160; height:30px; width:60px; margin-right:15px; border-radius: 4px">
-                    Lưu
-                </button>
-                <button id="updateBtn"
-                        style="background-color: #019160; height:30px; width:100px; margin-right:15px; border-radius:4px">
-                    Cập
-                    nhật
-                </button>
+                
             </div>
         </div>
         <div class="pop-up"></div>
